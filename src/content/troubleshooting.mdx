@@ -1,0 +1,52 @@
+---
+title: "Troubleshooting"
+description: "Diagnose authentication, authorization, validation, and simulated-environment failures."
+---
+
+Start with the HTTP status and response `message`. EmPay error responses use a
+consistent shape:
+
+```json
+{
+  "success": false,
+  "message": "Invalid token."
+}
+```
+
+## The request returns `401`
+
+Confirm that the request includes `Authorization: Bearer YOUR_ACCESS_TOKEN`.
+Complete the mock login first, then copy `data.token` into the header. If login
+returns `Invalid email or password.`, use `demo@empay.example` and
+`EmpayDemo123!` exactly as written.
+
+## The request returns `403`
+
+The token is valid but the user lacks permission. Check the operation description
+and [Roles and permissions](/concepts/roles-and-permissions). Use an account with
+the required role.
+
+## The request returns `400`
+
+For the interactive attendance endpoint, use a month from `1` to `12` and a year
+from `2000` to `9999`. The response message states both supported ranges.
+
+## The request returns `404`
+
+Confirm that you are calling one of the three hosted paths. Other operations in
+the [full API contract](/reference/full-api-contract) are reference-only and do
+not have hosted routes.
+
+## The interactive request does not work
+
+The documentation uses a simulated portfolio server, not the production EmPay
+backend. Confirm that the request URL begins with
+`https://empay-api-docs-demo.vercel.app` and that you are not sending real employee
+data. Start with the interactive login operation, copy its returned token, and
+then retry the [interactive attendance request](/api-reference/attendance/my).
+
+## The server returns `500`
+
+Retry once to rule out a transient failure. Record the method, URL, status,
+timestamp, and sanitized response message. Do not include bearer tokens or
+personal employee data in a bug report.

@@ -1,0 +1,91 @@
+---
+title: "Quickstart"
+description: "Send your first authenticated request to the simulated EmPay HRMS API."
+---
+
+Send an authenticated attendance request and inspect a fictional employee record.
+The complete workflow takes about five minutes and never connects to production
+EmPay data.
+
+## Base URL
+
+```text
+https://empay-api-docs-demo.vercel.app
+```
+
+## 1. Log in
+
+Use the published fictional account to request a test token:
+
+```bash
+curl --request POST \
+  --url https://empay-api-docs-demo.vercel.app/api/auth/login \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "email": "demo@empay.example",
+    "password": "EmpayDemo123!"
+  }'
+```
+
+Success returns HTTP `200` and `data.token` with the value
+`empay_portfolio_demo`. These credentials and the token are public because the
+mock contains only deterministic fictional data.
+
+## 2. Verify the profile
+
+Copy the returned token into an authenticated profile request:
+
+```bash
+curl https://empay-api-docs-demo.vercel.app/api/auth/me \
+  --header 'Authorization: Bearer empay_portfolio_demo'
+```
+
+Confirm that the response describes the fictional employee Ada Okafor and uses
+the email `demo@empay.example`.
+
+## 3. Retrieve attendance
+
+Retrieve attendance for August 2026:
+
+```bash
+curl --get \
+  --url https://empay-api-docs-demo.vercel.app/api/attendance/my \
+  --header 'Authorization: Bearer empay_portfolio_demo' \
+  --data-urlencode 'month=8' \
+  --data-urlencode 'year=2026'
+```
+
+## Verify the response
+
+Success returns HTTP `200`, `success: true`, and an array of fictional attendance
+records:
+
+```json
+{
+  "success": true,
+  "message": "Attendance fetched",
+  "data": [
+    {
+      "id": 1,
+      "date": "2026-08-01",
+      "check_in": "09:00:00",
+      "check_out": "17:00:00",
+      "status": "present",
+      "full_name": "Ada Okafor"
+    }
+  ]
+}
+```
+
+If the response returns `401`, confirm that the header begins with `Bearer` and
+that the token has no missing characters.
+
+## Continue
+
+Use the request panel on the interactive page to repeat the call without writing
+the command yourself:
+
+[Try the attendance endpoint →](/api-reference/attendance/my)
+
+Then follow [Retrieve monthly attendance](/guides/manage-attendance) for parameter
+validation, failure cases, and expected records.

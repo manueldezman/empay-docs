@@ -1,0 +1,60 @@
+---
+title: "Authentication"
+description: "Log in to the hosted mock API and authenticate its protected demo requests."
+---
+
+The hosted mock uses bearer authentication to demonstrate a realistic API workflow
+without connecting to production EmPay systems. Its credentials, token, user, and
+responses are intentionally fictional and public.
+
+## Log in
+
+Send the published demo email and password to the login endpoint:
+
+```bash
+curl --request POST \
+  --url https://empay-api-docs-demo.vercel.app/api/auth/login \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "email": "demo@empay.example",
+    "password": "EmpayDemo123!"
+  }'
+```
+
+A successful response includes the test token and fictional user profile:
+
+```json
+{
+  "success": true,
+  "message": "Login successful",
+  "data": {
+    "token": "empay_portfolio_demo",
+    "user": {
+      "id": 1,
+      "role": "employee",
+      "email": "demo@empay.example"
+    }
+  }
+}
+```
+
+## Authorize a request
+
+Prefix the token with `Bearer` in the `Authorization` header:
+
+```bash
+curl https://empay-api-docs-demo.vercel.app/api/auth/me \
+  --header 'Authorization: Bearer empay_portfolio_demo'
+```
+
+The test token works only with the three hosted mock operations. Never send real
+credentials, tokens, or employee data to the mock server.
+
+## Recover from authentication errors
+
+- `401 Access denied. No token provided.`: add the `Authorization` header.
+- `401 Invalid token.`: check that the value was copied completely and belongs to
+  the hosted mock.
+- `401 Invalid email or password.`: use the exact published fictional credentials.
+
+Next, [retrieve monthly attendance](/guides/manage-attendance).

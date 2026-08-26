@@ -1,0 +1,34 @@
+---
+title: "Full API contract"
+description: "Download the complete 49-operation EmPay OpenAPI contract and understand its reference-only scope."
+---
+
+The full EmPay HRMS contract documents 49 operations across authentication,
+users, attendance, leave, payroll, dashboards, notifications, settings, search,
+and audit activity.
+
+<Warning>
+  The full contract is reference-only. It describes the portfolio's complete API
+  surface, but those 49 operations are not backed by a hosted EmPay server.
+</Warning>
+
+## Download the specification
+
+- [Open the complete OpenAPI YAML](/full-openapi.yaml)
+- [Use the interactive mock API](/api) for the three operations that are hosted
+  with deterministic fictional responses.
+
+The downloadable contract includes request schemas, response schemas, role
+requirements, error cases, and examples. It intentionally has no global server
+URL, so API tools do not mistake the full contract for an executable environment.
+
+## Interactive subset
+
+The hosted mock supports only:
+
+1. `POST /api/auth/login`
+2. `GET /api/auth/me`
+3. `GET /api/attendance/my`
+
+Follow the [Quickstart](/getting-started) to complete that workflow from login to
+attendance retrieval.

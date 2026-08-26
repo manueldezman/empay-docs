@@ -1,0 +1,20 @@
+---
+title: "Get monthly attendance"
+description: "Retrieve monthly attendance records for the authenticated employee."
+openapi: "GET /api/attendance/my"
+---
+
+<Note>
+  This playground uses a simulated portfolio environment and fictional employee
+  data. It is not an official EmPay deployment.
+</Note>
+
+## Before you send the request
+
+Open the interactive API reference and complete `Log in to the mock API` first.
+Copy `data.token` from its successful response, then replace `YOUR_API_KEY` in the
+attendance request's `Authorization` header.
+
+Set `month` and `year`, send the request, and confirm that the response contains
+fictional attendance records. A `401` response means the bearer token is missing
+or incorrect.

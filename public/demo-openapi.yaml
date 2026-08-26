@@ -1,0 +1,267 @@
+openapi: 3.0.3
+info:
+  title: EmPay HRMS API interactive demo
+  version: 1.0.0
+  description: |
+    A safe, stateless mock workflow for the EmPay documentation portfolio.
+    Every response contains fictional data and is independent of production EmPay systems.
+servers:
+  - url: https://empay-api-docs-demo.vercel.app
+    description: Hosted Vercel mock API with fictional data
+tags:
+  - name: Start here
+    description: Exchange the published fictional credentials for a test bearer token.
+  - name: Authentication
+    description: Verify the fictional employee associated with the test token.
+  - name: Attendance
+    description: Retrieve deterministic monthly attendance records.
+paths:
+  /api/auth/login:
+    post:
+      tags: [Start here]
+      summary: Log in to the mock API
+      description: Returns a reusable test bearer token for the published fictional credentials.
+      operationId: loginToMockApi
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: Fictional demo account email.
+                password:
+                  type: string
+                  format: password
+                  description: Fictional demo account password.
+            example:
+              email: demo@empay.example
+              password: EmpayDemo123!
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+              example:
+                success: true
+                message: Login successful
+                data:
+                  token: empay_portfolio_demo
+                  user:
+                    id: 1
+                    full_name: Ada Okafor
+                    email: demo@empay.example
+                    role: employee
+                    department: Engineering
+                    designation: Software Engineer
+                    is_active: true
+        '401':
+          description: The fictional email or password is incorrect
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Invalid email or password.
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+
+  /api/auth/me:
+    get:
+      tags: [Authentication]
+      summary: Get the mock employee profile
+      description: Returns the fictional employee associated with the demo bearer token.
+      operationId: getMockProfile
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Profile fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileResponse'
+              example:
+                success: true
+                message: Profile fetched successfully
+                data:
+                  id: 1
+                  full_name: Ada Okafor
+                  email: demo@empay.example
+                  role: employee
+                  department: Engineering
+                  designation: Software Engineer
+                  is_active: true
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+
+  /api/attendance/my:
+    get:
+      tags: [Attendance]
+      summary: Get monthly mock attendance
+      description: Returns deterministic fictional attendance records for the selected month and year.
+      operationId: getMockAttendance
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: month
+          in: query
+          description: Calendar month from 1 to 12. Defaults to the current UTC month.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 12
+            example: 8
+        - name: year
+          in: query
+          description: Four-digit year from 2000 to 9999. Defaults to the current UTC year.
+          schema:
+            type: integer
+            minimum: 2000
+            maximum: 9999
+            example: 2026
+      responses:
+        '200':
+          description: Attendance fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttendanceResponse'
+              example:
+                success: true
+                message: Attendance fetched
+                data:
+                  - id: 1
+                    employee_id: 1
+                    date: '2026-08-01'
+                    check_in: '09:00:00'
+                    check_out: '17:00:00'
+                    accumulated_minutes: 0
+                    duration_minutes: 480
+                    status: present
+                    created_at: '2026-08-01T18:00:00.000Z'
+                    full_name: Ada Okafor
+                    email: ada@example.com
+                    department: Engineering
+                    designation: Software Engineer
+                    profile_pic: https://cdn.example.com/avatars/ada.jpg
+        '400':
+          description: Month or year is outside the supported range
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: Month must be 1-12 and year must be 2000-9999.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Paste the token returned by the mock login operation.
+  responses:
+    Unauthorized:
+      description: The bearer token is missing or invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            missing:
+              summary: Token not provided
+              value:
+                success: false
+                message: Access denied. No token provided.
+            invalid:
+              summary: Token is incorrect
+              value:
+                success: false
+                message: Invalid token.
+    MethodNotAllowed:
+      description: The HTTP method is not supported
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            success: false
+            message: Method not allowed.
+  schemas:
+    DemoUser:
+      type: object
+      required: [id, full_name, email, role, department, designation, is_active]
+      properties:
+        id: { type: integer }
+        full_name: { type: string }
+        email: { type: string, format: email }
+        role: { type: string, enum: [employee] }
+        department: { type: string }
+        designation: { type: string }
+        is_active: { type: boolean }
+    LoginResponse:
+      type: object
+      required: [success, message, data]
+      properties:
+        success: { type: boolean, enum: [true] }
+        message: { type: string }
+        data:
+          type: object
+          required: [token, user]
+          properties:
+            token: { type: string, example: empay_portfolio_demo }
+            user: { $ref: '#/components/schemas/DemoUser' }
+    ProfileResponse:
+      type: object
+      required: [success, message, data]
+      properties:
+        success: { type: boolean, enum: [true] }
+        message: { type: string }
+        data: { $ref: '#/components/schemas/DemoUser' }
+    AttendanceRecord:
+      type: object
+      required: [id, employee_id, date, accumulated_minutes, status, created_at, full_name, email, department, designation]
+      properties:
+        id: { type: integer }
+        employee_id: { type: integer }
+        date: { type: string, format: date }
+        check_in: { type: string, nullable: true }
+        check_out: { type: string, nullable: true }
+        accumulated_minutes: { type: integer }
+        duration_minutes: { type: integer, nullable: true }
+        status: { type: string, enum: [present, absent, half_day, on_leave] }
+        created_at: { type: string, format: date-time }
+        full_name: { type: string }
+        email: { type: string, format: email }
+        department: { type: string }
+        designation: { type: string }
+        profile_pic: { type: string, nullable: true }
+    AttendanceResponse:
+      type: object
+      required: [success, message, data]
+      properties:
+        success: { type: boolean, enum: [true] }
+        message: { type: string }
+        data:
+          type: array
+          items: { $ref: '#/components/schemas/AttendanceRecord' }
+    ErrorResponse:
+      type: object
+      required: [success, message]
+      properties:
+        success: { type: boolean, enum: [false] }
+        message: { type: string }
