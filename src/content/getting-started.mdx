@@ -1,11 +1,35 @@
 ---
 title: "Quickstart"
-description: "Send your first authenticated request to the simulated EmPay HRMS API."
+description: "Send your first authenticated request to the EmPay HRMS API."
 ---
 
-Send an authenticated attendance request and inspect a fictional employee record.
-The complete workflow takes about five minutes and never connects to production
-EmPay data.
+Send an authenticated attendance request and inspect the response. The complete
+workflow takes about five minutes.
+
+## Before you start
+
+To use the EmPay API in a normal integration, you need to:
+
+1. Create an EmPay account.
+2. Sign in to obtain a JWT access token.
+3. Install `curl` if it is not available on your computer.
+
+Run the following command to check whether `curl` is installed:
+
+```bash
+curl --version
+```
+
+If the command is not recognized, [install `curl` from the official curl
+website](https://curl.se/) for your operating system before continuing.
+
+<Info>
+  **Using the portfolio demo**
+
+  You do not need to create an account or obtain an access token for this
+  demonstration. The guide provides a demonstration account and access token,
+  and the requests in this guide are already prefilled with them.
+</Info>
 
 ## Base URL
 
@@ -13,51 +37,22 @@ EmPay data.
 https://empay-api-docs-demo.vercel.app
 ```
 
-## 1. Log in
+## Retrieve monthly attendance
 
-Use the published fictional account to request a test token:
-
-```bash
-curl --request POST \
-  --url https://empay-api-docs-demo.vercel.app/api/auth/login \
-  --header 'Content-Type: application/json' \
-  --data '{
-    "email": "demo@empay.example",
-    "password": "EmpayDemo123!"
-  }'
-```
-
-Success returns HTTP `200` and `data.token` with the value
-`empay_portfolio_demo`. These credentials and the token are public because the
-mock contains only deterministic fictional data.
-
-## 2. Verify the profile
-
-Copy the returned token into an authenticated profile request:
-
-```bash
-curl https://empay-api-docs-demo.vercel.app/api/auth/me \
-  --header 'Authorization: Bearer empay_portfolio_demo'
-```
-
-Confirm that the response describes the fictional employee Ada Okafor and uses
-the email `demo@empay.example`.
-
-## 3. Retrieve attendance
-
-Retrieve attendance for August 2026:
+Copy and run the following request to retrieve attendance for August 2026. The
+access token is already prefilled.
 
 ```bash
 curl --get \
   --url https://empay-api-docs-demo.vercel.app/api/attendance/my \
-  --header 'Authorization: Bearer empay_portfolio_demo' \
+  --header 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjQsInJvbGUiOiJlbXBsb3llZSIsImlzcyI6ImVtcGF5LWRlbW8iLCJhdWQiOiJlbXBheS1hcGkifQ.eeZsZ8ubtiGiqnaNKZF0zXgR3hZBEgQ8MQN17l3Z6G9IP4Ku3_yWUaNHeO4GDMbUfsmv-3f9mKv2g8YsqN8aJAgSBQdXdbrUjGIEDPEaoPFolkl28f2V3eH2PyHJAuwgbZ9Tec1OmA-f88d8ELD4Aoe5Gji_q-WDJ3SXcW4l36RiP9ito7AhPRZx9nCgYrqCblACwyMKJfaukLVQR_icGoxJrWxZN1Yufz9sLTJMuy6NjG3oaRhHFNnT9go3ZpHlowkhgGZWajnUCYbpYrCaBFhVO_kyzmvyJ7BOxO7UlAevM2GMBx57Hd106CkCFC84n5Qve4JnbUkuX8PfoYwKng' \
   --data-urlencode 'month=8' \
   --data-urlencode 'year=2026'
 ```
 
 ## Verify the response
 
-Success returns HTTP `200`, `success: true`, and an array of fictional attendance
+Success returns HTTP `200`, `success: true`, and an array of attendance
 records:
 
 ```json
@@ -67,9 +62,9 @@ records:
   "data": [
     {
       "id": 1,
-      "date": "2026-08-01",
-      "check_in": "09:00:00",
-      "check_out": "17:00:00",
+      "date": "2026-08-03",
+      "check_in": "08:52:00",
+      "check_out": "17:08:00",
       "status": "present",
       "full_name": "Ada Okafor"
     }
@@ -85,7 +80,4 @@ that the token has no missing characters.
 Use the request panel on the interactive page to repeat the call without writing
 the command yourself:
 
-[Try the attendance endpoint →](/api-reference/attendance/my)
-
-Then follow [Retrieve monthly attendance](/guides/manage-attendance) for parameter
-validation, failure cases, and expected records.
+[Try the attendance endpoint →](/api/default/api/attendance/my/get)

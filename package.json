@@ -1,6 +1,6 @@
 {
   "name": "empay-docs",
-  "description": "Agent-ready documentation for the simulated EmPay HRMS API.",
+  "description": "Agent-ready documentation for the EmPay HRMS API portfolio.",
   "version": "0.1.0",
   "private": true,
   "license": "MIT",

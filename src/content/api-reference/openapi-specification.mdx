@@ -1,0 +1,52 @@
+---
+title: "OpenAPI specification"
+description: "Download or reference the complete EmPay OpenAPI specification."
+---
+
+The EmPay API follows OpenAPI 3.0.3. Use the specification to:
+
+- Generate client libraries.
+- Import the API into testing tools.
+- Integrate the API with AI agents and other developer tools.
+- Build automated documentation and contract tests.
+
+## Access the specification
+
+Choose the format that suits your workflow:
+
+<Columns cols={2}>
+  <Card title="OpenAPI YAML" icon="file-code" href="/openapi.yaml">
+    Open the complete YAML specification.
+  </Card>
+  <Card title="OpenAPI JSON" icon="braces" href="/openapi.json">
+    Open the complete JSON specification.
+  </Card>
+</Columns>
+
+## Specification details
+
+| Detail | Value |
+| --- | --- |
+| OpenAPI version | 3.0.3 |
+| API version | 1.0.0 |
+| Operations | 49 |
+| Authentication | JWT bearer token |
+
+## API base URL
+
+| Environment | Base URL |
+| --- | --- |
+| Demonstration | `https://empay-api-docs-demo.vercel.app` |
+
+## For AI agents
+
+AI agents can discover and consume the documentation through the OpenAPI files,
+[`llms.txt`](/llms.txt), the documentation index, and the MCP endpoint exposed by
+this site.
+
+## Quick links
+
+- [API overview](/api-reference/overview)
+- [Rate limits and API authentication](/api-reference/rate-limits-and-authentication)
+- [Error codes](/api-reference/error-codes)
+- [Quickstart](/getting-started)

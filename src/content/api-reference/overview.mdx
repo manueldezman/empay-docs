@@ -1,0 +1,57 @@
+---
+title: "Overview"
+description: "Learn the fundamentals of the EmPay HRMS API."
+---
+
+The EmPay REST API gives applications access to employee administration,
+attendance, leave, payroll, dashboards, notifications, settings, search, and
+audit workflows.
+
+<Info>
+  **Portfolio demonstration**
+
+  Every operation returns a representative response so you can explore the API.
+  Requests do not save changes.
+</Info>
+
+## Base URL
+
+All API operations use HTTPS and the following base URL:
+
+```text
+https://empay-api-docs-demo.vercel.app
+```
+
+## Authentication
+
+Protected operations require a JWT access token in the `Authorization` header:
+
+```http
+Authorization: Bearer <ACCESS_TOKEN>
+```
+
+Sign in through `POST /api/auth/login` to obtain a token. Each protected
+operation includes a demonstration account and token that you can use directly.
+
+## Rate limits
+
+The EmPay application limits general API traffic to 100 requests per 15 minutes
+per IP address and authentication traffic to 15 requests per 15 minutes per IP
+address. These limits describe the application; this demonstration does not
+enforce them.
+
+## Error messages
+
+Errors use an HTTP status code and a JSON response containing `success: false`
+and a readable `message`.
+
+```json
+{
+  "success": false,
+  "message": "Invalid token."
+}
+```
+
+Continue to the [OpenAPI specification](/api-reference/openapi-specification),
+[rate limits and API authentication](/api-reference/rate-limits-and-authentication),
+or [error codes](/api-reference/error-codes).

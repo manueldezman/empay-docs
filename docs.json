@@ -4,36 +4,47 @@
   },
   "tabs": [
     {
-      "tab": "Documentation",
+      "tab": "Overview",
+      "groups": [
+        {
+          "group": "Learn About EmPay",
+          "pages": [
+            "introduction"
+          ]
+        },
+        {
+          "group": "EmPay Architecture",
+          "pages": [
+            "concepts/system-overview"
+          ]
+        },
+        {
+          "group": "Platform concepts",
+          "pages": [
+            "concepts/roles-and-permissions"
+          ]
+        }
+      ]
+    },
+    {
+      "tab": "Guides",
       "groups": [
         {
           "group": "Getting Started",
           "pages": [
-            "introduction",
-            "product-overview",
-            "getting-started",
-            "authentication"
+            "getting-started"
           ]
         },
         {
           "group": "Core workflows",
           "pages": [
-            "guides/manage-attendance",
             "guides/request-and-review-leave",
             "guides/generate-payroll"
           ]
         },
         {
-          "group": "Concepts",
-          "pages": [
-            "concepts/roles-and-permissions",
-            "reference/full-api-contract"
-          ]
-        },
-        {
           "group": "Test and troubleshoot",
           "pages": [
-            "api-reference/attendance/my",
             "troubleshooting"
           ]
         }
@@ -41,13 +52,36 @@
     },
     {
       "tab": "API Reference",
+      "groups": [
+        {
+          "group": "About API",
+          "pages": [
+            "api-reference/overview",
+            "api-reference/openapi-specification",
+            "api-reference/rate-limits-and-authentication",
+            "api-reference/error-codes"
+          ]
+        }
+      ],
       "api": {
-        "source": "/demo-openapi.yaml",
-        "tagsOrder": ["Start here", "Authentication", "Attendance"]
+        "source": "/openapi.yaml",
+        "tagsOrder": [
+          "Authentication",
+          "Users",
+          "Attendance",
+          "Leave",
+          "Payroll",
+          "Dashboard",
+          "Notifications",
+          "Settings",
+          "Search",
+          "Audit",
+          "Health"
+        ]
       }
     },
     {
-      "tab": "Changelog",
+      "tab": "Change Logs",
       "groups": [
         {
           "group": "Overview",
