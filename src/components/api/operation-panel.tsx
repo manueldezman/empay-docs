@@ -19,6 +19,7 @@ export function OperationPanel({ operation }: OperationPanelProps) {
   const controller = useTryItController(operation)
   const methodToken = getMethodToken(operation.method)
   const [isDialogOpen, setDialogOpen] = useState(false)
+  const description = splitOperationDescription(operation.description)
 
   type ParamLocation = 'path' | 'query' | 'header' | 'cookie'
   const parameterGroups: Array<{ title: string; location: ParamLocation; parameters: Array<NormalizedParameter> }> = [
@@ -37,9 +38,9 @@ export function OperationPanel({ operation }: OperationPanelProps) {
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-foreground/50">{operation.group}</p>
             <div className="space-y-2">
               <h1 className="font-heading text-[2rem] font-medium leading-9 tracking-[-0.025em] text-foreground sm:text-4xl sm:leading-10">{operation.title}</h1>
-              {operation.description ? (
+              {description.body ? (
                 <div className="prose prose-neutral dark:prose-invert max-w-none text-base text-foreground/70">
-                  <Markdown>{operation.description}</Markdown>
+                  <Markdown>{description.body}</Markdown>
                 </div>
               ) : (
                 <p className="text-base text-foreground/70">
@@ -63,6 +64,11 @@ export function OperationPanel({ operation }: OperationPanelProps) {
               Try it
             </button>
           </div>
+          {description.notice ? (
+            <div className="prose prose-neutral dark:prose-invert max-w-none text-base text-foreground/70">
+              <Markdown>{description.notice}</Markdown>
+            </div>
+          ) : null}
         </header>
 
         {/* Servers */}
@@ -168,6 +174,25 @@ export function OperationPanel({ operation }: OperationPanelProps) {
       <TryItDialog controller={controller} open={isDialogOpen} onOpenChange={setDialogOpen} />
     </div>
   )
+}
+
+function splitOperationDescription(description?: string): { notice?: string; body?: string } {
+  if (!description?.startsWith('>')) return { body: description }
+
+  const lines = description.split('\n')
+  const noticeLines: string[] = []
+  let index = 0
+
+  while (index < lines.length && (lines[index].startsWith('>') || lines[index].trim() === '')) {
+    if (lines[index].trim() === '' && lines[index + 1] && !lines[index + 1].startsWith('>')) break
+    noticeLines.push(lines[index])
+    index += 1
+  }
+
+  return {
+    notice: noticeLines.join('\n').trim(),
+    body: lines.slice(index).join('\n').trim(),
+  }
 }
 
 // ---------------------------------------------------------------------------

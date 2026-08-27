@@ -26,7 +26,14 @@ export function Markdown({ children, className }: MarkdownProps) {
             </a>
           ),
           p: ({ children }) => <p className="leading-relaxed">{children}</p>,
-          blockquote: ({ children }) => <Note type="note">{children}</Note>,
+          blockquote: ({ children }) => (
+            <Note
+              type="note"
+              className="[&_pre]:max-w-full [&_pre]:whitespace-pre-wrap [&_code]:break-all"
+            >
+              {children}
+            </Note>
+          ),
         }}
       >
         {children}
