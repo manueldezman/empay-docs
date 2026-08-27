@@ -2,6 +2,7 @@
 
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import { Note } from '@/components/mdx/note'
 
 interface MarkdownProps {
   children: string
@@ -25,6 +26,7 @@ export function Markdown({ children, className }: MarkdownProps) {
             </a>
           ),
           p: ({ children }) => <p className="leading-relaxed">{children}</p>,
+          blockquote: ({ children }) => <Note type="note">{children}</Note>,
         }}
       >
         {children}
