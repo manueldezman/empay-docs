@@ -29,7 +29,10 @@ To reduce unnecessary traffic:
 
 ## Using JWT authentication
 
-Send the token returned by the login operation as a bearer token:
+Authentication to the EmPay API is performed using a JWT access token sent
+through the standard HTTP `Authorization` header. Obtain the token by
+[logging in](/api/default/api/auth/login/post), then include it with every
+request to a protected endpoint:
 
 ```http
 Authorization: Bearer <ACCESS_TOKEN>
@@ -39,8 +42,11 @@ The EmPay application issues access tokens that expire after seven days. The
 public demonstration tokens do not expire, so reviewers can use the documented
 requests without periodic updates.
 
-Never expose production access tokens in public documentation or client-side
-source code.
+<Danger>
+  Never publish or hard-code production JWT access tokens in public
+  documentation or source code. Treat every token as a credential and transmit
+  it only over HTTPS.
+</Danger>
 
 ## Role permissions
 
