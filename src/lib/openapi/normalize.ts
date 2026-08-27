@@ -147,6 +147,9 @@ function normalizeOperation(options: NormalizeOperationOptions): NormalizedOpera
     options.securitySchemes,
     options.resolveRef,
     { ...parameterPrefill.header },
+    typeof options.rawOperation['x-thally-bearer-token'] === 'string'
+      ? options.rawOperation['x-thally-bearer-token']
+      : undefined,
   )
 
   const operationServers = normalizeServers(options.rawOperation.servers)
@@ -435,6 +438,7 @@ function applySecurityAuthPrefill(
   securitySchemes: Record<string, RawObject>,
   resolveRef: (ref: string) => RawObject | null,
   headerPrefill: Record<string, string>,
+  operationBearerToken?: string,
 ): Record<string, string> {
   const credentials = getApiPlaygroundCredentials()
   const result = { ...headerPrefill }
@@ -448,7 +452,7 @@ function applySecurityAuthPrefill(
       const type = scheme.type as string | undefined
 
       if (type === 'http' && scheme.scheme === 'bearer') {
-        const token = configured ?? 'YOUR_API_KEY'
+        const token = operationBearerToken ?? configured ?? 'YOUR_API_KEY'
         result.Authorization = token.startsWith('Bearer ') ? token : `Bearer ${token}`
       } else if (type === 'apiKey' && scheme.in === 'header' && typeof scheme.name === 'string') {
         result[scheme.name as string] = configured ?? 'YOUR_API_KEY'
@@ -616,4 +620,3 @@ function buildParameterSampleValue(
     return ''
   }
 }
-
