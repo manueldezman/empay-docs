@@ -14,11 +14,9 @@ determines what that user can do.
 | `payroll_officer` | Salary structures, payroll generation, pay runs, and payroll reporting |
 | `admin` | Organization administration, settings, audit logs, and endpoints that explicitly include administrators |
 
-The table summarizes common responsibilities. The OpenAPI description for each
-operation is authoritative because some endpoints permit a narrower combination
-of roles.
+Each endpoint identifies the roles permitted to perform that operation.
 
-## Diagnose a `403` response
+## Resolve a `403` response
 
 1. Confirm that login succeeded and the token is current.
 2. Read `data.user.role` from the login response or call `GET /api/auth/me`.
@@ -26,5 +24,7 @@ of roles.
 4. Use a token belonging to an authorized account; do not attempt to change the
    role in the client.
 
-A missing or invalid token returns `401`, not `403`. See
-[Troubleshooting](/troubleshooting) for the full error checklist.
+A missing or invalid token returns `401`, not `403`. See the [Error
+codes](/api-reference/error-codes) page for the full authorization error
+checklist and [Troubleshooting](/troubleshooting) for guidance on resolving the
+issue.
