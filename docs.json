@@ -64,7 +64,7 @@
         }
       ],
       "api": {
-        "source": "/openapi.yaml",
+        "source": "/full-openapi.yaml",
         "tagsOrder": [
           "Authentication",
           "Users",

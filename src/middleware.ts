@@ -43,6 +43,7 @@ const PUBLIC_API_PREFIXES = [
   '/api/brand/',
   '/api/docs/',
   '/api/markdown/',
+  '/api/openapi/',
   '/api/well-known/',
 ]
 

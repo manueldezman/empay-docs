@@ -1,15 +1,19 @@
 import type { NextRequest } from 'next/server'
+import { stringify as stringifyYaml } from 'yaml'
+import { apiReferenceConfig } from '@/config/api-reference'
+import { getSpecConfig, loadSpecDocument } from '@/lib/openapi/fetch'
+import type { OpenAPIDocument } from '@/lib/openapi/types'
 
 const DOWNLOADS = {
   yaml: {
-    publicPath: '/openapi.yaml',
     filename: 'empay-openapi.yaml',
     contentType: 'application/yaml; charset=utf-8',
+    serialize: (document: OpenAPIDocument) => stringifyYaml(document),
   },
   json: {
-    publicPath: '/openapi.json',
     filename: 'empay-openapi.json',
     contentType: 'application/json; charset=utf-8',
+    serialize: (document: OpenAPIDocument) => JSON.stringify(document, null, 2),
   },
 } as const
 
@@ -25,15 +29,16 @@ export async function GET(request: NextRequest) {
   }
 
   const download = DOWNLOADS[format]
-  const sourceResponse = await fetch(new URL(download.publicPath, request.nextUrl.origin), {
-    cache: 'force-cache',
-  })
+  const specConfig = getSpecConfig(apiReferenceConfig, apiReferenceConfig.defaultSpecId)
+  let document: OpenAPIDocument
 
-  if (!sourceResponse.ok) {
+  try {
+    document = await loadSpecDocument(specConfig)
+  } catch {
     return Response.json({ error: 'The OpenAPI specification is unavailable.' }, { status: 502 })
   }
 
-  return new Response(sourceResponse.body, {
+  return new Response(download.serialize(document), {
     headers: {
       'Cache-Control': 'public, max-age=300',
       'Content-Disposition': `attachment; filename="${download.filename}"`,
