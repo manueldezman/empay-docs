@@ -34,12 +34,7 @@
           "pages": [
             "getting-started"
           ]
-        }
-      ]
-    },
-    {
-      "tab": "Guides",
-      "groups": [
+        },
         {
           "group": "Core workflows",
           "pages": [
