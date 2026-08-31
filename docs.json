@@ -27,14 +27,19 @@
       ]
     },
     {
-      "tab": "Guides",
+      "tab": "Getting Started",
       "groups": [
         {
-          "group": "Getting Started",
+          "group": "Quickstart",
           "pages": [
             "getting-started"
           ]
-        },
+        }
+      ]
+    },
+    {
+      "tab": "Guides",
+      "groups": [
         {
           "group": "Core workflows",
           "pages": [
