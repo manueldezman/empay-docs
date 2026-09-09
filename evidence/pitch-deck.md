@@ -72,7 +72,4 @@ npm run build
 Verified from a clean clone at commit `923c5f6`: install, check, 351 tests, and
 production build all passed.
 
-Evidence: [evidence](evidence/clean-clone-verification.md)
-
-
-All evidence is available in the `evidence/` folder in this repository.
+Evidence: [evidence link](evidence/clean-clone-verification.md)
